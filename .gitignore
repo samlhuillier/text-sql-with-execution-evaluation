@@ -1,3 +1,4 @@
 spider/database
 generate_datasets/preprocessed_data.json
 src/__pycache__
+mohamed-spider-training.jsonl
