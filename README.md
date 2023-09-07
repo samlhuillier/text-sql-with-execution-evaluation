@@ -18,6 +18,11 @@ Run the command below, and the predicted sql will be save to the file named "pre
 bash run_c3sql.sh 
 ```
 
+### Lhuillier's evaluation
+```
+python third_party/test-suite-sql-eval/evaluation.py --gold dev_gold.sql --pred predicted_sql.txt --db /Users/sam/Downloads/spider/database --table spider/tables.json --etype all
+```
+
 ## Run evaluation 
 Add your openai key in the *generate_sqls_by_gpt3.5.py*, *column_recall.py*, *table_recall.py* files. 
 ```shell
