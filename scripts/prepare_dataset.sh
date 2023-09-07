@@ -22,17 +22,17 @@ python src/preprocessing.py \
     --db_path "$db_path" \
     --target_type "sql"
 
-# recall tables
-echo "recall tables..."
-python src/table_recall.py \
-    --input_dataset_path "./generate_datasets/preprocessed_data.json" \
-    --output_recalled_tables_path "./generate_datasets/table_recall.json" \
+# # recall tables
+# echo "recall tables..."
+# python src/table_recall.py \
+#     --input_dataset_path "./generate_datasets/preprocessed_data.json" \
+#     --output_recalled_tables_path "./generate_datasets/table_recall.json" \
 
-# recall columns
-echo "recall columns..."
-python src/column_recall.py \
-    --input_recalled_tables_path "./generate_datasets/table_recall.json" \
-    --output_recalled_columns_path "./generate_datasets/column_recall.json" \
+# # recall columns
+# echo "recall columns..."
+# python src/column_recall.py \
+#     --input_recalled_tables_path "./generate_datasets/table_recall.json" \
+#     --output_recalled_columns_path "./generate_datasets/column_recall.json" \
 
 # generate prompt
 echo "generate prompt..."
