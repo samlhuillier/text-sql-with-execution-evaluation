@@ -1,5 +1,4 @@
-SELECT count(*) FROM singer	concert_singer
-SELECT count(*) FROM singer	concert_singer
+SELECT count(*) FROM singer	singer
 SELECT name ,  country ,  age FROM singer ORDER BY age DESC	concert_singer
 SELECT name ,  country ,  age FROM singer ORDER BY age DESC	concert_singer
 SELECT avg(age) ,  min(age) ,  max(age) FROM singer WHERE country  =  'France'	concert_singer
@@ -581,10 +580,6 @@ SELECT other_student_details FROM Students ORDER BY other_student_details DESC	s
 SELECT other_student_details FROM Students ORDER BY other_student_details DESC	student_transcripts_tracking
 SELECT section_description FROM Sections WHERE section_name  =  'h'	student_transcripts_tracking
 SELECT section_description FROM Sections WHERE section_name  =  'h'	student_transcripts_tracking
-select t1.first_name from students as t1 join addresses as t2 on t1.permanent_address_id  =  t2.address_id where t2.country  =  'haiti' or t1.cell_mobile_number  =  '09700166582'	student_transcripts_tracking
-select t1.first_name from students as t1 join addresses as t2 on t1.permanent_address_id  =  t2.address_id where t2.country  =  'haiti' or t1.cell_mobile_number  =  '09700166582'	student_transcripts_tracking
-SELECT Title FROM Cartoon ORDER BY title	tvshow
-SELECT Title FROM Cartoon ORDER BY title	tvshow
 SELECT Title FROM Cartoon WHERE Directed_by = "Ben Jones";	tvshow
 SELECT Title FROM Cartoon WHERE Directed_by = "Ben Jones";	tvshow
 SELECT count(*) FROM Cartoon WHERE Written_by = "Joseph Kuhr";	tvshow

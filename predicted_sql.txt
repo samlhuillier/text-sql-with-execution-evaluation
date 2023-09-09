@@ -1,5 +1,4 @@
 SELECT COUNT(*) FROM singer;
-SELECT COUNT(*) FROM singer;
 SELECT name, country, age FROM singer ORDER BY age DESC;
 SELECT singer.name, singer.country, singer.age FROM singer ORDER BY singer.age DESC;
 SELECT AVG(age), MIN(age), MAX(age) FROM singer WHERE country = 'France';
@@ -581,10 +580,6 @@ SELECT students.first_name, students.last_name, students.middle_name, students.s
 SELECT students.last_name, students.first_name, students.middle_name, students.other_student_details FROM students ORDER BY students.last_name DESC;
 SELECT section_name, section_description, section_id, course_id FROM sections WHERE section_name = 'h';
 SELECT sections.section_description FROM sections WHERE sections.section_name = 'h';
-SELECT students.first_name FROM students WHERE students.permanent_address_id IN (SELECT address_id FROM addresses WHERE country = 'Haiti') OR students.cell_mobile_number = '09700166582';
-SELECT first_name FROM students WHERE permanent_address_id IN (SELECT address_id FROM addresses WHERE country = 'Haiti') OR cell_mobile_number = '09700166582';
-SELECT title FROM cartoon ORDER BY title ASC;
-SELECT cartoon.title FROM cartoon ORDER BY cartoon.title ASC;
 SELECT title FROM cartoon WHERE directed_by = 'Ben Jones';
 SELECT cartoon.title FROM cartoon WHERE cartoon.directed_by = 'Ben Jones';
 SELECT COUNT(*) FROM cartoon WHERE written_by = "Joseph Kuhr";

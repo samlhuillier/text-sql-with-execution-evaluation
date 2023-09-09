@@ -5,3 +5,4 @@ mohamed-spider-training.jsonl
 spider_create_context_train.json
 sql_create_context_v4.json
 spider_create_context_val.json
+llama-checkpoints
