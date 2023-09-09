@@ -20,7 +20,7 @@ bash run_c3sql.sh
 
 ### Lhuillier's evaluation
 ```
-python third_party/test-suite-sql-eval/evaluation.py --gold dev_gold.sql --pred predicted_sql.txt --db /Users/sam/Downloads/spider/database --table spider/tables.json --etype all
+python third_party/test-suite-sql-eval/evaluation.py --gold spider-create-context-intersect/spider_create_context_gold-568.sql --pred llama7b-predicted2.txt --db /Users/sam/Downloads/spider/database --table spider/tables.json --etype all
 ```
 
 ## Run evaluation 
