@@ -1,0 +1,70 @@
+SELECT count(*) FROM singer
+SELECT name ,  country ,  age FROM singer ORDER BY age DESC
+SELECT avg(age) ,  min(age) ,  max(age) FROM singer WHERE country  =  'France'
+SELECT song_name ,  song_release_year FROM singer ORDER BY age DESC LIMIT 1
+SELECT DISTINCT country FROM singer WHERE age  >  20
+SELECT country ,  count(*) FROM singer GROUP BY country
+SELECT song_name FROM singer WHERE age  >  (SELECT avg(age) FROM singer)
+SELECT LOCATION ,  name FROM stadium WHERE capacity BETWEEN 5000 AND 10000.
+SELECT max(capacity) ,  average FROM stadium
+SELECT avg(capacity) ,  max(capacity) FROM stadium
+SELECT name ,  capacity FROM stadium ORDER BY average DESC LIMIT 1
+SELECT count(*) FROM concert WHERE YEAR  =  2014 OR YEAR  =  2015
+SELECT T2.name ,  count(*) FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id GROUP BY T1.stadium_id
+SELECT T1.name ,  T1.capacity FROM stadium AS T1 JOIN concert AS T2 ON T1.stadium_id  =  T2.stadium_id WHERE T2.year  >=  2014 GROUP BY T1.stadium_id ORDER BY count(*) DESC LIMIT 1
+SELECT T2.name , T2.capacity FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id = T2.stadium_id WHERE T1.year > 2013 GROUP BY T1.stadium_id ORDER BY count(*) DESC LIMIT 1
+SELECT YEAR FROM concert GROUP BY YEAR ORDER BY count(*) DESC LIMIT 1;
+SELECT name FROM stadium WHERE stadium_id NOT IN (SELECT stadium_id FROM concert)
+SELECT country FROM singer WHERE age  >  40 INTERSECT SELECT country FROM singer WHERE age  <  30
+SELECT name FROM stadium EXCEPT SELECT T2.name FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id WHERE T1.year  !=  2014
+SELECT T1.concert_name ,  T1.theme ,  COUNT(*) FROM concert AS T1 JOIN singer_in_concert AS T2 ON T1.concert_id  =  T2.concert_id GROUP BY T1.concert_id
+SELECT T2.concert_name ,  T2.theme ,  COUNT(*) FROM singer_in_concert AS T1 JOIN concert AS T2 ON T1.concert_id  =  T2.concert_id GROUP BY T2.concert_id
+SELECT T2.name ,  count(*) FROM singer_in_concert AS T1 JOIN singer AS T2 ON T1.singer_id  =  T2.singer_id GROUP BY T1.singer_id
+SELECT T2.name FROM singer_in_concert AS T1 JOIN singer AS T2 ON T1.singer_id = T2.singer_id JOIN concert AS T3 ON T1.concert_id = T3.concert_id WHERE T3.year = 2014
+SELECT name ,  country FROM singer WHERE song_name LIKE '%Hey%'
+SELECT T2.name ,  T2.location FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id WHERE T1.Year  =  2014 INTERSECT SELECT T2.name ,  T2.location FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id WHERE T1.Year  =  2015
+SELECT count(*) FROM concert WHERE stadium_id = (SELECT stadium_id FROM stadium ORDER BY capacity DESC LIMIT 1))
+SELECT count(*) FROM pets WHERE weight  >  10
+SELECT weight FROM pets ORDER BY pet_age LIMIT 1
+SELECT MAX(weight) ,  petType FROM pets GROUP BY petType
+SELECT count(*) FROM student JOIN has_pet ON student.stuid  =  has_pet.stuid WHERE student.age  >  20
+SELECT count(*) FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T2.petid  =  T3.petid WHERE T1.sex  =  'F' AND T3.pettype  =  'dog'
+SELECT count(DISTINCT pettype) FROM pets
+SELECT DISTINCT T1.Fname FROM student AS T1 JOIN has_pet AS T2 ON T1.StuID  =  T2.StuID JOIN pets AS T3 ON T2.PetID  =  T3.PetID WHERE T3.PetType  =  'cat' OR T3.PetType  =  'dog'
+SELECT T1.fname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid = T2.stuid JOIN pets AS T3 ON T3.petid = T2.petid WHERE T3.pettype = "cat" INTERSECT SELECT T1.fname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid = T2.stuid JOIN pets AS T3 ON T3.petid = T2.petid WHERE T3.pettype = "dog"
+SELECT T1.Fname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'cat' INTERSECT SELECT T1.Fname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'dog'
+SELECT major ,  age FROM student WHERE stuid NOT IN (SELECT T1.stuid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'cat')
+SELECT stuid FROM student EXCEPT SELECT T1.stuid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'Cat'
+SELECT t1.fname ,  t1.age FROM student AS t1 JOIN has_pet AS t2 ON t1.stuid  =  t2.stuid JOIN pets AS t3 ON t2.petid  =  t3.petid WHERE t3.pettype  =  'dog' EXCEPT SELECT t1.fname ,  t1.age FROM student AS t1 JOIN has_pet AS t2 ON t1.stuid  =  t2.stuid JOIN pets AS t3 ON t2.petid  =  t3.petid WHERE t3.pettype  =  'cat'
+SELECT pettype ,  weight FROM pets ORDER BY pet_age LIMIT 1
+SELECT petid ,  weight FROM pets WHERE pet_age  >  1
+SELECT avg(pet_age) ,  max(pet_age) ,  pettype FROM pets GROUP BY pettype;
+SELECT avg(weight) ,  pettype FROM pets GROUP BY pettype
+SELECT DISTINCT fname ,  age FROM student JOIN has_pet ON student.stuid  =  has_pet.stuid
+SELECT T2.petid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid WHERE T1.Lname  =  'Smith'
+SELECT count(*) ,  T1.stuid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid GROUP BY T1.stuid
+SELECT count(*) ,  T1.stuid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid GROUP BY T1.stuid
+SELECT T1.fname ,  T1.sex FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid GROUP BY T1.stuid HAVING COUNT(*)  >  1
+SELECT T1.lname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pet_age  =  3 AND T3.pettype  =  'cat'
+SELECT avg(age) FROM student WHERE stuid NOT IN (SELECT stuid FROM has_pet)
+SELECT COUNT(*) FROM CONTINENTS;
+SELECT T1.ContId ,  T1.Continent ,  count(*) FROM CONTINENTS AS T1 JOIN COUNTRIES AS T2 ON T1.Continent  =  T2.Continent GROUP BY T1.ContId
+SELECT count(*) FROM COUNTRIES;
+SELECT FullName ,  Id ,   count(*) FROM CAR_MAKERS AS T1 JOIN MODEL_LIST AS T2 ON T1.Id  =  T2.Maker GROUP BY T1.FullName;
+SELECT T1.Model FROM CAR_NAMES AS T1 JOIN CARS_DATA AS T2 ON T1.Id  =  T2.Id ORDER BY T2.CoalSavings2009 ASC LIMIT 1;
+SELECT model FROM CAR_NAMES WHERE MakeId IN (SELECT Id FROM CARS_DATA WHERE Weight  <  (SELECT avg(Weight) FROM CARS_DATA)))SELECT DISTINCT T1.Maker FROM CAR_MAKERS AS T1 JOIN MODEL_LIST AS T2 ON T1.Id  =  T2.Maker JOIN CAR_NAMES AS T3 ON T2.model  =  T3.model JOIN CARS_DATA AS T4 ON T3.MakeId  =  T4.id WHERE T4.year  =  1970;
+SELECT T2.Make ,  T2.MakeId FROM CARS_DATA AS T1 JOIN CAR_NAMES AS T2 ON T1.Year  =  T2.MakeId WHERE T1.Year  =  (SELECT min(YEAR) FROM CARS_DATA)
+SELECT DISTINCT T2.model FROM CARS_DATA AS T1 JOIN CAR_NAMES AS T2 ON T1.ID  =  T2.MakeId JOIN MODEL_LIST AS T3 ON T2.model  =  T3.model WHERE T1.year  >  1980;
+SELECT T2.Continent ,  COUNT(*) FROM COUNTRIES AS T1 JOIN CONTINENTS AS T2 ON T1.continent  =  T2.ContId JOIN car_makers AS T3 ON T1.CountryId  =  T3.Country GROUP BY T2.Continent
+SELECT T2.CountryName FROM CAR_MAKERS AS T1 JOIN COUNTRIES AS T2 ON T1.Country  =  T2.CountryId GROUP BY T1.Country ORDER BY Count(*) DESC LIMIT 1;
+SELECT count(*) ,  T1.fullname FROM car_makers AS T1 JOIN model_list AS T2 ON T1.id  =  T2.maker GROUP BY T1.id
+SELECT count(*) ,  T1.Maker FROM MODEL_LIST AS T1 JOIN CAR_MAKERS AS T2 ON T1.Maker  =  T2.Id GROUP BY T1.Maker
+SELECT T1.Accelerate FROM CARS_DATA AS T1 JOIN CAR_NAMES AS T2 ON T1.Id  =  T2.MakeId WHERE T2.Make  =  'amc hornet sportabout (sw)'
+SELECT count(*) FROM CAR_MAKERS AS T1 JOIN COUNTRIES AS T2 ON T1.Country  =  T2.CountryId WHERE T2.CountryName  =  'france';
+SELECT count(*) FROM MODEL_LIST AS T1 JOIN CAR_MAKERS AS T2 ON T1.Maker  =  T2.Id JOIN COUNTRIES AS T3 ON T2.Country  =  T3.CountryId WHERE T3.CountryName  =  'USA'
+SELECT avg(mpg) FROM CARS_DATA WHERE Cylinders  =  4
+SELECT min(weight) FROM cars_data WHERE cylinders = 8 AND year = 1974;
+SELECT Maker ,  Model FROM MODEL_LIST
+SELECT T1.CountryName ,  T1.CountryId FROM COUNTRIES AS T1 JOIN CAR_MAKERS AS T2 ON T1.CountryId  =  T2.Country GROUP BY T1.CountryId HAVING count(*)  >=  1;
+SELECT count(*) FROM CARS_DATA WHERE horsepower  >  150;
+SELECT avg(Weight) ,  YEAR FROM CARS_DATA GROUP BY YEAR
