@@ -1,0 +1,55 @@
+nohup: ignoring input
+Found cached dataset json (/root/.cache/huggingface/datasets/json/default-6c643d5b422473c6/0.0.0/0f7e3662623656454fcd2b650f34e886a7db4b9104504885bd462096cc7a9f51)
+Found cached dataset json (/root/.cache/huggingface/datasets/json/default-fa34a11bab3e823d/0.0.0/0f7e3662623656454fcd2b650f34e886a7db4b9104504885bd462096cc7a9f51)
+{'question': 'What are the maximum and minimum budget of the departments?', 'context': 'CREATE TABLE department (budget_in_billions INTEGER)', 'answer': 'SELECT max(budget_in_billions) ,  min(budget_in_billions) FROM department', 'db_id': 'department_management'}
+Loading checkpoint shards:   0%|          | 0/7 [00:00<?, ?it/s]Loading checkpoint shards:  14%|█▍        | 1/7 [00:06<00:36,  6.10s/it]Loading checkpoint shards:  29%|██▊       | 2/7 [00:12<00:30,  6.02s/it]Loading checkpoint shards:  43%|████▎     | 3/7 [00:18<00:24,  6.16s/it]Loading checkpoint shards:  57%|█████▋    | 4/7 [00:24<00:18,  6.15s/it]Loading checkpoint shards:  71%|███████▏  | 5/7 [00:30<00:12,  6.16s/it]Loading checkpoint shards:  86%|████████▌ | 6/7 [00:37<00:06,  6.29s/it]Loading checkpoint shards: 100%|██████████| 7/7 [00:43<00:00,  6.21s/it]Loading checkpoint shards: 100%|██████████| 7/7 [00:43<00:00,  6.19s/it]
+Special tokens have been added in the vocabulary, make sure the associated word embeddings are fine-tuned or trained.
+Loading cached processed dataset at /root/.cache/huggingface/datasets/json/default-6c643d5b422473c6/0.0.0/0f7e3662623656454fcd2b650f34e886a7db4b9104504885bd462096cc7a9f51/cache-2f56c798256200ec.arrow
+Loading cached processed dataset at /root/.cache/huggingface/datasets/json/default-fa34a11bab3e823d/0.0.0/0f7e3662623656454fcd2b650f34e886a7db4b9104504885bd462096cc7a9f51/cache-ebdf0f88691cc5a1.arrow
+/root/miniconda3/envs/myenv/lib/python3.10/site-packages/peft/utils/other.py:133: FutureWarning: prepare_model_for_int8_training is deprecated and will be removed in a future version. Use prepare_model_for_kbit_training instead.
+  warnings.warn(
+gradient_accumulation_steps 16
+compiling the model
+wandb: Currently logged in as: samlhuillier. Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.15.10
+wandb: Run data is saved locally in /root/text-sql-with-execution-evaluation/llama-training-code/wandb/run-20230912_164145-4obs2ucd
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run codellama-2023-09-12-16-41
+wandb: ⭐️ View project at https://wandb.ai/samlhuillier/codellama34b-original-lowerlearningrate
+wandb: 🚀 View run at https://wandb.ai/samlhuillier/codellama34b-original-lowerlearningrate/runs/4obs2ucd
+  0%|          | 0/400 [00:00<?, ?it/s]You're using a CodeLlamaTokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.
+/root/miniconda3/envs/myenv/lib/python3.10/site-packages/torch/utils/checkpoint.py:429: UserWarning: torch.utils.checkpoint: please pass in use_reentrant=True or use_reentrant=False explicitly. The default value of use_reentrant will be updated to be False in the future. To maintain current behavior, pass use_reentrant=True. It is recommended that you use use_reentrant=False. Refer to docs for more details on the differences between the two variants.
+  warnings.warn(
+/root/miniconda3/envs/myenv/lib/python3.10/site-packages/bitsandbytes/autograd/_functions.py:322: UserWarning: MatMul8bitLt: inputs will be cast from torch.float32 to float16 during quantization
+  warnings.warn(f"MatMul8bitLt: inputs will be cast from {A.dtype} to float16 during quantization")
+Traceback (most recent call last):
+  File "/root/text-sql-with-execution-evaluation/llama-training-code/codellama34b-train.py", line 295, in <module>
+    trainer.train()
+  File "/root/miniconda3/envs/myenv/lib/python3.10/site-packages/transformers/trainer.py", line 1574, in train
+    return inner_training_loop(
+  File "/root/miniconda3/envs/myenv/lib/python3.10/site-packages/transformers/trainer.py", line 1874, in _inner_training_loop
+    tr_loss_step = self.training_step(model, inputs)
+  File "/root/miniconda3/envs/myenv/lib/python3.10/site-packages/transformers/trainer.py", line 2746, in training_step
+    self.accelerator.backward(loss)
+  File "/root/miniconda3/envs/myenv/lib/python3.10/site-packages/accelerate/accelerator.py", line 1921, in backward
+    self.scaler.scale(loss).backward(**kwargs)
+  File "/root/miniconda3/envs/myenv/lib/python3.10/site-packages/torch/_tensor.py", line 492, in backward
+    torch.autograd.backward(
+  File "/root/miniconda3/envs/myenv/lib/python3.10/site-packages/torch/autograd/__init__.py", line 251, in backward
+    Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+  File "/root/miniconda3/envs/myenv/lib/python3.10/site-packages/torch/autograd/function.py", line 289, in apply
+    return user_fn(self, *args)
+  File "/root/miniconda3/envs/myenv/lib/python3.10/site-packages/torch/utils/checkpoint.py", line 288, in backward
+    torch.autograd.backward(outputs_with_grad, args_with_grad)
+  File "/root/miniconda3/envs/myenv/lib/python3.10/site-packages/torch/autograd/__init__.py", line 251, in backward
+    Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+  File "/root/miniconda3/envs/myenv/lib/python3.10/site-packages/torch/autograd/function.py", line 289, in apply
+    return user_fn(self, *args)
+  File "/root/miniconda3/envs/myenv/lib/python3.10/site-packages/bitsandbytes/autograd/_functions.py", line 484, in backward
+    .to(ctx.dtype_A)
+torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate 688.00 MiB. GPU 0 has a total capacty of 44.39 GiB of which 193.56 MiB is free. Process 222764 has 44.19 GiB memory in use. Of the allocated memory 42.10 GiB is allocated by PyTorch, and 911.18 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
+wandb: Waiting for W&B process to finish... (failed 1). Press Control-C to abort syncing.
+wandb: - 0.006 MB of 0.006 MB uploaded (0.000 MB deduped)wandb: \ 0.006 MB of 0.006 MB uploaded (0.000 MB deduped)wandb: | 0.006 MB of 0.006 MB uploaded (0.000 MB deduped)wandb: / 0.006 MB of 0.006 MB uploaded (0.000 MB deduped)wandb: 🚀 View run codellama-2023-09-12-16-41 at: https://wandb.ai/samlhuillier/codellama34b-original-lowerlearningrate/runs/4obs2ucd
+wandb: ️⚡ View job at https://wandb.ai/samlhuillier/codellama34b-original-lowerlearningrate/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjk2OTY1NDAz/version_details/v0
+wandb: Synced 6 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20230912_164145-4obs2ucd/logs
