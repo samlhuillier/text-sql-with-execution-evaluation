@@ -6,3 +6,6 @@ spider_create_context_train.json
 sql_create_context_v4.json
 spider_create_context_val.json
 llama-checkpoints
+llama-training-code/all-linear-layers-codellama34btry
+llama-training-code/code-llama34b
+llama-training-code/wandb
