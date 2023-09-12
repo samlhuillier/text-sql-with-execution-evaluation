@@ -1,0 +1,7 @@
+nohup: ignoring input
+Found cached dataset json (/root/.cache/huggingface/datasets/json/default-9bc69f6e65f2f31b/0.0.0/0f7e3662623656454fcd2b650f34e886a7db4b9104504885bd462096cc7a9f51)
+Found cached dataset json (/root/.cache/huggingface/datasets/json/default-c281c4141b625881/0.0.0/0f7e3662623656454fcd2b650f34e886a7db4b9104504885bd462096cc7a9f51)
+wandb: W&B API key is configured. Use `wandb login --relogin` to force relogin
+wandb: Appending key for api.wandb.ai to your netrc file: /root/.netrc
+{'question': 'What are the maximum and minimum budget of the departments?', 'context': 'CREATE TABLE department (budget_in_billions INTEGER)', 'answer': 'SELECT max(budget_in_billions) ,  min(budget_in_billions) FROM department', 'db_id': 'department_management'}
+Loading checkpoint shards:   0%|          | 0/7 [00:00<?, ?it/s]Loading checkpoint shards:  14%|█▍        | 1/7 [00:03<00:20,  3.43s/it]Loading checkpoint shards:  29%|██▊       | 2/7 [00:06<00:17,  3.41s/it]Loading checkpoint shards:  43%|████▎     | 3/7 [00:10<00:13,  3.41s/it]Loading checkpoint shards:  57%|█████▋    | 4/7 [00:14<00:10,  3.57s/it]Loading checkpoint shards:  71%|███████▏  | 5/7 [00:18<00:07,  3.73s/it]Loading checkpoint shards:  86%|████████▌ | 6/7 [00:21<00:03,  3.80s/it]

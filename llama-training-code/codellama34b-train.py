@@ -13,15 +13,12 @@
 # 
 
 # %%
-# !pip install git+https://github.com/huggingface/transformers.git@main bitsandbytes accelerate==0.20.3  # we need latest transformers for this
-# !pip install git+https://github.com/huggingface/peft.git@e536616888d51b453ed354a6f1e243fecb02ea08
+# !pip install git+https://github.com/huggingface/transformers.git@main bitsandbytes  # we need latest transformers for this
+# !pip install git+https://github.com/huggingface/peft.git@4c611f4
 # !pip install datasets==2.10.1
 # import locale # colab workaround
 # locale.getpreferredencoding = lambda: "UTF-8" # colab workaround
 # !pip install wandb
-# !pip install scipy
-
-# # %%
 # !pip install scipy
 
 # %% [markdown]
@@ -44,7 +41,7 @@ from peft import (
     prepare_model_for_int8_training,
     set_peft_model_state_dict,
 )
-from transformers import AutoTokenizer, AutoModelForCausalLM, TrainingArguments, Trainer, DataCollatorForSeq2Seq
+from transformers import AutoTokenizer, AutoModelForCausalLM, TrainingArguments, Trainer, DataCollatorForSeq2Seq, BitsAndBytesConfig
 
 
 # %% [markdown]
@@ -57,8 +54,8 @@ from transformers import AutoTokenizer, AutoModelForCausalLM, TrainingArguments,
 
 # %%
 from datasets import load_dataset
-train_dataset = load_dataset('json', data_files='/root/text-sql-with-execution-evaluation/spider-create-context-intersect/spider_create_context_train_db_id.json', split='train')
-eval_dataset = load_dataset('json', data_files='/root/text-sql-with-execution-evaluation/spider-create-context-intersect/spider_create_context_val_db_id.json', split='train')
+train_dataset = load_dataset('json', data_files='/home/sam/text-sql-with-execution-evaluation/spider-create-context-intersect/spider_create_context_train_db_id.json', split='train')
+eval_dataset = load_dataset('json', data_files='/home/sam/text-sql-with-execution-evaluation/spider-create-context-intersect/spider_create_context_val_db_id.json', split='train')
 
 # %% [markdown]
 # The above pulls the dataset from the Huggingface Hub and splits 10% of it into an evaluation set to check how well the model is doing through training. If you want to load your own dataset do this:
@@ -81,12 +78,22 @@ print(train_dataset[3])
 # ### Load model
 # I load code llama from huggingface in int8. Standard for Lora:
 
+import wandb
+
+wandb.login(key="07d2fe3d77f6ad7bac5fb71f8154573c994f5120")
+
 # %%
+bnb_config = BitsAndBytesConfig(
+    load_in_4bit=True,
+    bnb_4bit_quant_type="nf4",
+    bnb_4bit_compute_dtype=torch.float16,
+)
+
 base_model = "codellama/CodeLlama-34b-hf"
 model = AutoModelForCausalLM.from_pretrained(
     base_model,
-    load_in_8bit=True,
-    torch_dtype=torch.float16,
+    quantization_config=bnb_config,
+    # torch_dtype=torch.float16,
     device_map="auto",
 )
 tokenizer = AutoTokenizer.from_pretrained("codellama/CodeLlama-34b-hf")
@@ -103,23 +110,23 @@ tokenizer = AutoTokenizer.from_pretrained("codellama/CodeLlama-34b-hf")
 # 
 
 # %%
-# eval_prompt = """You are a powerful text-to-SQL model. Your job is to answer questions about a database. You are given a question and context regarding one or more tables.
+eval_prompt = """You are a powerful text-to-SQL model. Your job is to answer questions about a database. You are given a question and context regarding one or more tables.
 
-# You must output the SQL query that answers the question.
-# ### Input:
-# Which Class has a Frequency MHz larger than 91.5, and a City of license of hyannis, nebraska?
+You must output the SQL query that answers the question.
+### Input:
+Which Class has a Frequency MHz larger than 91.5, and a City of license of hyannis, nebraska?
 
-# ### Context:
-# CREATE TABLE table_name_12 (class VARCHAR, frequency_mhz VARCHAR, city_of_license VARCHAR)
+### Context:
+CREATE TABLE table_name_12 (class VARCHAR, frequency_mhz VARCHAR, city_of_license VARCHAR)
 
-# ### Response:
-# """
-# # {'question': 'Name the comptroller for office of prohibition', 'context': 'CREATE TABLE table_22607062_1 (comptroller VARCHAR, ticket___office VARCHAR)', 'answer': 'SELECT comptroller FROM table_22607062_1 WHERE ticket___office = "Prohibition"'}
-# model_input = tokenizer(eval_prompt, return_tensors="pt").to("cuda")
+### Response:
+"""
+# {'question': 'Name the comptroller for office of prohibition', 'context': 'CREATE TABLE table_22607062_1 (comptroller VARCHAR, ticket___office VARCHAR)', 'answer': 'SELECT comptroller FROM table_22607062_1 WHERE ticket___office = "Prohibition"'}
+model_input = tokenizer(eval_prompt, return_tensors="pt").to("cuda")
 
-# model.eval()
-# with torch.no_grad():
-#     print(tokenizer.decode(model.generate(**model_input, max_new_tokens=100)[0], skip_special_tokens=True))
+model.eval()
+with torch.no_grad():
+    print(tokenizer.decode(model.generate(**model_input, max_new_tokens=100)[0], skip_special_tokens=True))
 
 # %% [markdown]
 # I get the output:
@@ -190,15 +197,15 @@ model.train() # put model back into training mode
 model = prepare_model_for_int8_training(model)
 
 config = LoraConfig(
-    r=16,
+    r=8,
     lora_alpha=16,
-    # target_modules=['q_proj','k_proj','v_proj','o_proj','gate_proj','down_proj','up_proj','lm_head'],
-    target_modules=[
-    "q_proj",
-    "k_proj",
-    "v_proj",
-    "o_proj",
-],
+    target_modules=['q_proj','k_proj','v_proj','o_proj','gate_proj','down_proj','up_proj','lm_head'],
+#     target_modules=[
+#     "q_proj",
+#     "k_proj",
+#     "v_proj",
+#     "o_proj",
+# ],
     lora_dropout=0.05,
     bias="none",
     task_type="CAUSAL_LM",
@@ -223,7 +230,7 @@ if resume_from_checkpoint:
 # Optional stuff to setup Weights and Biases to view training graphs:
 
 # %%
-wandb_project = "codellama34b-original-lowerlearningrate"
+wandb_project = "qloracodellama34b-64batch-r8-alllinear-1e4learningrate"
 if len(wandb_project) > 0:
     os.environ["WANDB_PROJECT"] = wandb_project
 
@@ -239,11 +246,10 @@ if torch.cuda.device_count() > 1:
 # If you run out of GPU memory, change per_device_train_batch_size. The gradient_accumulation_steps variable should ensure this doesn't affect batch dynamics during the training run. All the other variables are standard stuff that I wouldn't recommend messing with:
 
 # %%
-batch_size = 128
+batch_size = 64
 per_device_train_batch_size = 8
 gradient_accumulation_steps = batch_size // per_device_train_batch_size
-print("gradient_accumulation_steps", gradient_accumulation_steps)
-output_dir = "codellama34b-original-lowerlearningrate"
+output_dir = "qloracodellama34b-64batch-r8-alllinear-1e4learningrate"
 
 training_args = TrainingArguments(
         per_device_train_batch_size=per_device_train_batch_size,
@@ -318,10 +324,10 @@ trainer.train()
 # from peft import PeftModel
 # model = PeftModel.from_pretrained(model, output_dir)
 
-# # %% [markdown]
-# # Try the same prompt as before:
+# %% [markdown]
+# Try the same prompt as before:
 
-# # %%
+# %%
 # eval_prompt = """You are a powerful text-to-SQL model. Your job is to answer questions about a database. You are given a question and context regarding one or more tables.
 
 # You must output the SQL query that answers the question.
@@ -341,12 +347,12 @@ trainer.train()
 #     print(tokenizer.decode(model.generate(**model_input, max_new_tokens=100)[0], skip_special_tokens=True))
 
 
-# # %% [markdown]
-# # And the model outputs:
-# # ```
-# # SELECT class FROM table_name_12 WHERE frequency_mhz > 91.5 AND city_of_license = "hyannis, nebraska"
-# # ```
-# # So it works! If you want to convert your this adapter to a Llama.cpp model to run locally follow my other [guide](https://ragntune.com/blog/A-guide-to-running-Llama-2-qlora-loras-on-Llama.cpp). If you have any questions, shoot me a message on [Elon Musk's website](https://twitter.com/samlhuillier_).
-# # 
+# %% [markdown]
+# And the model outputs:
+# ```
+# SELECT class FROM table_name_12 WHERE frequency_mhz > 91.5 AND city_of_license = "hyannis, nebraska"
+# ```
+# So it works! If you want to convert your this adapter to a Llama.cpp model to run locally follow my other [guide](https://ragntune.com/blog/A-guide-to-running-Llama-2-qlora-loras-on-Llama.cpp). If you have any questions, shoot me a message on [Elon Musk's website](https://twitter.com/samlhuillier_).
+# 
 
 
