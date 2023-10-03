@@ -12,37 +12,9 @@ mv spider/database .
 mv spider data
 ```
 
-### Run Inference 
-Run the command below, and the predicted sql will be save to the file named "predicted_sql.txt"
-```shell
-bash run_c3sql.sh 
-```
-
-### Lhuillier's evaluation
+### Run evaluation:
+(Install the python dependencies it complains about)
 ```
 python third_party/test-suite-sql-eval/evaluation.py --gold spider-create-context-intersect/spider_create_context_gold-568.sql --pred llama7b-predicted2.txt --db /Users/sam/Downloads/spider/database --table spider/tables.json --etype all
 ```
-
-## Run evaluation 
-Add your openai key in the *generate_sqls_by_gpt3.5.py*, *column_recall.py*, *table_recall.py* files. 
-```shell
-openai.api_key = "your_api_key"
-```
-
-Clone evaluation scripts (test-suite-sql-eval:[https://github.com/taoyds/test-suite-sql-eval](https://github.com/taoyds/test-suite-sql-eval)): 
-
-```shell
-mkdir third_party
-cd third_party
-git clone https://github.com/taoyds/test-suite-sql-eval
-cd ..
-```
-
-
-Put the 'predicted_sql.txt' in the current directory. 
-
-Then you can run evaluation with following command, and you will see the results on dev data.  
-For testing, you just need to replace '**dev_gold.sql**' with your test data, folder '**database**' with your database and '**spider/tables.json**' with your test tables.json. 
-```shell
-python third_party/test-suite-sql-eval/evaluation.py --gold dev_gold.sql --pred predicted_sql.txt --db database --table data/spider/tables.json --etype all 
-```
+Replace ```llama7b-predicted2.txt``` with your generated file. Bear in mind that, ```spider-create-context-intersect/spider_create_context_gold-568.sql``` are the ground truth values for my custom subset of [spider](https://huggingface.co/datasets/samlhuillier/sql-create-context-spider-intersect). Use ```spider/dev_gold.sql``` for the full spider ground truth values. 
